@@ -10,7 +10,7 @@ import datetime
 import numpy as np
 from flask_restful import Api
 from common import make_new_response, get_geo
-
+from settings import cfg
 
 app = Flask(__name__)
 # 用Api来绑定app
@@ -76,7 +76,7 @@ def project_info():
             if len(lst_factors_id) > 0:
                 for a_factor_id in lst_factors_id:
                     factor_info = DbProxy.get_factor_info(a_factor_id[0])
-                    # todo: 筛选出字段
+                    # 筛选出字段
                     name, type, monitor_result, sensor_layout, monitor_conclusion = factor_info[0]
                     lst_monitor_result.append({
                         "type": type,
@@ -203,7 +203,7 @@ def point_info():
             "section_monitor_conclusion":  section_monitor_conclusion,    # 断面监测结论描述
             "related_info": related_info,     # 备注信息
         }
-        # todo: 曲线数据
+        # 曲线数据
     # return jsonify(ret)
     return make_new_response(ret)
 
@@ -331,7 +331,8 @@ def outline_data():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8899)
+    app.run(host=cfg.get('srv', 'host'),
+            port=int(cfg.get('srv', 'port')))
 
 
 
